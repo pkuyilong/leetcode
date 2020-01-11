@@ -100,7 +100,7 @@ class Merge():
             else:
                 new_nums.append(behind[j])
                 j += 1
-        # python 化的写法，比较简洁
+        # python_version 化的写法，比较简洁
         new_nums += front[i:]
         new_nums += behind[j:]
         return new_nums
