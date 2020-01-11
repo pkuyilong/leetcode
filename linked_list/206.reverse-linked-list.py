@@ -10,6 +10,7 @@
 输出: 5->4->3->2->1->NULL
 """
 import sys
+
 sys.path.append("../..")
 from linked_list.list_op import *
 

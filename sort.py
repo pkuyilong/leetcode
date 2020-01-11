@@ -1,7 +1,6 @@
 import numpy as np
 
 
-
 def partition(nums, start, end):
     if start == end:
         return nums
@@ -18,18 +17,18 @@ def partition(nums, start, end):
     nums[i], nums[start] = nums[start], nums[i]
     return i
 
+
 def quicksort(nums, start, end):
     if start < end:
         mid = partition(nums, start, end)
-        quicksort(nums, start, mid-1)
-        quicksort(nums, mid+1, end)
-
+        quicksort(nums, start, mid - 1)
+        quicksort(nums, mid + 1, end)
 
 
 def partation(nums, start, end):
     if start == end:
         return nums
-    i, j = start+1, end
+    i, j = start + 1, end
     key = nums[start]
     while i < j:
         while i < j and nums[j] >= key:
@@ -39,6 +38,7 @@ def partation(nums, start, end):
         nums[i], nums[j] = nums[j], nums[i]
     nums[i], nums[start] = nums[start], nums[i]
     return i
+
 
 def s(nums, start, end):
     if start >= end:
