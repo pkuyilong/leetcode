@@ -1,5 +1,6 @@
 # 384. 打乱数组
 # https://leetcode-cn.com/problems/shuffle-an-array/
+
 import random
 from copy import deepcopy
 

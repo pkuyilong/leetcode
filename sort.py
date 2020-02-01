@@ -1,5 +1,3 @@
-import numpy as np
-
 
 def partition(nums, start, end):
     if start == end:
