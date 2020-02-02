@@ -38,8 +38,11 @@
     dp[i] =  1   if  截取出来的单词在wordDict中 and dp[i-len(截取出来的单词)] == 1
           =  0   else
 """
+
 import sys
-class Solution:
+
+
+class Solution_0:
     def wordBreak(self, s, wordDict):
         if not s or len(s) == 0:
             return False
@@ -67,12 +70,30 @@ class Solution:
                     continue
 
                 # 截取出来的长度
-                tmp = s[j:i+1]
+                tmp = s[j:i + 1]
                 if len(tmp) in len_word.keys():
                     if tmp in len_word[len(tmp)] and dp[j] == 1:
-                        dp[i+1] = 1
+                        dp[i + 1] = 1
                         break
                 j -= 1
+        # print(dp)
+        return dp[len(s)]
+
+
+import sys
+
+
+class Solution:
+    def wordBreak(self, s, wordDict):
+        if not s or len(s) == 0:
+            return 0
+        dp = [0 for i in range(len(s) + 1)]
+        dp[0] = 1
+        for i in range(len(s)):
+            for j in range(i + 1):
+                tmp = s[j: i + 1]
+                if tmp in wordDict and dp[j] == 1:
+                    dp[i + 1] = 1
         # print(dp)
         return dp[len(s)]
 
@@ -83,4 +104,3 @@ if __name__ == '__main__':
     word = "applepenapple"
     res = Solution().wordBreak(word, wordDict)
     print(res)
-
