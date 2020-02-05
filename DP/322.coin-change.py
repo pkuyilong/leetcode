@@ -40,7 +40,7 @@
 
 import sys
 
-
+# Accepted
 class Solution():
     def coinChange(self, coins, amount):
         dp = [0 for _ in range(amount + 1)]
@@ -60,8 +60,55 @@ class Solution():
             return dp[amount]
 
 
+# DFS timeout
+class Solution_DFS():
+    def coinChange(self, coins, amount):
+        coins.sort(reverse=True)
+        res = []
+        memo = []
+        self.change_helper(coins, amount, 0, [], res)
+        if len(res) == 0:
+            return -1
+        return len(res[0])
+
+    def change_helper(self, coins, amount, count, tmp, res):
+        if amount < 0:
+            return
+        if amount == 0:
+            res.append(tmp[:])
+            return
+
+        for coin in coins:
+            tmp.append(coin)
+            self.change_helper(coins, amount - coin, count + 1, tmp, res)
+            tmp.pop()
+
+
+from collections import deque
+
+
+class Solution_9():
+    def coinChange(self, coins, amount):
+        coins.sort(reverse=True)
+        q = deque()
+        q.append((amount, 0))
+        ans = -1
+        while len(q) != 0:
+            cur_amount, cur_level = q.popleft()
+            print(cur_amount, cur_level)
+            if cur_amount == 0:
+                ans = cur_level
+                break
+
+            for coin in coins:
+                # 必须确保要求解的数值要大于备选硬币的值
+                if cur_amount >= coin:
+                    q.append((cur_amount - coin, cur_level + 1))
+        return ans
+
+
 if __name__ == '__main__':
-    coins = [1, 2, 5]
-    amount = 10
+    coins = [2, 4]
+    amount = 7
     res = Solution().coinChange(coins, amount)
     print(res)

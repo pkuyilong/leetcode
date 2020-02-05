@@ -85,12 +85,12 @@ import sys
 
 class Solution:
     def wordBreak(self, s, wordDict):
-        if not s or len(s) == 0:
+        if s is None or len(s) == 0:
             return 0
         dp = [0 for i in range(len(s) + 1)]
         dp[0] = 1
         for i in range(len(s)):
-            for j in range(i + 1):
+            for j in range(i+1):
                 tmp = s[j: i + 1]
                 if tmp in wordDict and dp[j] == 1:
                     dp[i + 1] = 1
@@ -100,7 +100,7 @@ class Solution:
 
 if __name__ == '__main__':
     # wordDict = {"leet", "code", "etc"}
-    wordDict = {"apple", "pen"}
-    word = "applepenapple"
+    wordDict = {"a"}
+    word = "a"
     res = Solution().wordBreak(word, wordDict)
     print(res)

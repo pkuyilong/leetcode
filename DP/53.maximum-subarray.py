@@ -5,13 +5,16 @@
     dp[i] 代表考虑到第i个位置为止，最大的子序列长度之和
     但是该题目并不是dp数组的最后一个结果为最大值，需要额外使用一个变量来不断更新最大值
 
+    dp[i] = max(dp[i-1],0)  + nums[i]
+
 """
 
 
 # 53题解
-class Solution:
+class Solution_1:
     def maxSubArray(self, nums):
-        if not nums or len(nums) == 0: return nums
+        if nums is None or len(nums) == 0:
+            return 0
         dp = [0 for i in range(len(nums))]
         dp[0] = nums[0]
         max_res = nums[0]
@@ -19,6 +22,27 @@ class Solution:
             dp[i] = max(dp[i - 1], 0) + nums[i]
             max_res = max(max_res, dp[i])
         return max_res
+
+
+class Solution:
+    """
+    根据公式 dp[i] = max(dp[i-1], 0) + nums[i]可知，
+    dp[i] 只与 dp[i-1]有关系，所以不需要O(n)的空间
+    使用cur代替dp[i-1], 使用nxt代替dp[i]即可
+
+    """
+    def maxSubArray(self, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+        cur = nums[0]
+        nxt = nums[0]
+        ans = nums[0]
+        for i in range(1, len(nums)):
+            cur = nxt
+            nxt = cur + nums[i] if cur > 0 else nums[i]
+            ans = max(nxt, ans)
+        return ans
+
 
 
 # 升级版：如果要计算出最大子序列的起始位置， 用这个代码
