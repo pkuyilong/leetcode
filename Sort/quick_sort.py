@@ -7,6 +7,8 @@
     5. 将左边数组和右边数组以及枢纽节点进行拼接
 
 """
+
+# 简洁版本
 class Solution():
     def quick_sort(self, nums):
         if len(nums) == 0 or len(nums) == 1:
@@ -27,9 +29,31 @@ class Solution():
         return left_arr + mid + right_arr
 
 
+# 正常版本
+class Solution_0():
+    def quick_sort(self, nums):
+        if len(nums) == 0 or len(nums) == 1:
+            return nums
+        left = 0
+        right = len(nums) - 1
+        key = nums[0]
+        while left < right:
+            while left < right and nums[right] >= key:
+                right -= 1
+            nums[left], nums[right] = nums[right], nums[left]
+            while left < right and nums[left] < key:
+                left += 1
+            nums[left], nums[right] = nums[right], nums[left]
+        nums[left] = key
+        left_arr = self.quick_sort(nums[:left])
+        right_arr = self.quick_sort(nums[left+1:])
+        return left_arr + [key] + right_arr
+
+
+
 if __name__ == '__main__':
     nums = [1, 2, 1, 0, 3, 9, 2]
-    res = Solution().quick_sort(nums)
+    res = Solution_0().quick_sort(nums)
     print(res)
 
 
