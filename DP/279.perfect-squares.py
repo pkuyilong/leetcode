@@ -87,7 +87,6 @@ class Solution:
             for j in range(int(math.sqrt(value)), -1, -1):
                 if value - j * j > 0:
                     q.append((value - j * j, level + 1))
-
                 if value - j * j == 0:
                     return level + 1
 

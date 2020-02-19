@@ -1,5 +1,5 @@
 # 343. 整数拆分
-#  https://leetcode-cn.com/problems/integer-break/
+# https://leetcode-cn.com/problems/integer-break/
 
 """ 思路
     典型的动态规划题目，需要做的就是找出dp[新的数字]和dp[老的数字]之间的关系

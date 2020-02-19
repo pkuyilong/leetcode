@@ -9,15 +9,11 @@
 输入: 1->2->3->4->5->NULL
 输出: 5->4->3->2->1->NULL
 """
-import sys
-
-sys.path.append("../..")
 from linked_list.list_op import *
 
 
 class Solution_1:
-    def __init__(self):
-        self.root = None
+    root = None
 
     def reverseList(self, head):
         if head is None:
@@ -75,6 +71,6 @@ if __name__ == '__main__':
     nums = [1, 2, 3, 4, 5]
     head = create_list(nums)
     print_list(head)
-    sol = Solution()
+    sol = Solution_1()
     new_head = sol.reverseList(head)
     print_list(new_head)

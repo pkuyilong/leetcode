@@ -40,6 +40,7 @@ class Solution:
         return ret_path
 
 
+
 if __name__ == '__main__':
     # path = "/a//b////c/d//././/.."
     path = '/...'

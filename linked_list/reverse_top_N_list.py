@@ -1,17 +1,3 @@
-# 206. 反转链表
-# https://leetcode-cn.com/problems/reverse-linked-list/
-
-"""
-反转一个单链表。
-
-示例:
-
-输入: 1->2->3->4->5->NULL
-输出: 5->4->3->2->1->NULL
-"""
-import sys
-
-sys.path.append("../..")
 from linked_list.list_op import *
 
 
@@ -48,5 +34,5 @@ if __name__ == '__main__':
     nums = [1, 2, 3, 4, 5]
     head = create_list(nums)
     sol = Solution()
-    new_head = sol.reverseList(head, 5)
+    new_head = sol.reverseList(head, 3)
     print_list(new_head)
