@@ -1,5 +1,7 @@
 import numpy as np
+from pprint import pprint
 
+#
 
 class Solution(object):
     res = list()
@@ -77,7 +79,14 @@ if __name__ == '__main__':
             [9, 10, 11]]
     arr3 = [[1, 11], [2, 12], [3, 13], [4, 14], [5, 15], [6, 16], [7, 17], [8, 18], [9, 19], [10, 20]]
 
-    sol = Solution_1()
-    res = sol.spiralOrder(arr3)
-    print(res)
-    # print(Solution.res)
+
+    new = [list(reversed(i)) for i in arr3[1:]]
+    pprint(new)
+    l = [list(i) for i in zip(*new)]
+    print(l)
+
+
+    # sol = Solution_1()
+    # res = sol.spiralOrder(arr3)
+    # print(res)
+    # # print(Solution.res)
