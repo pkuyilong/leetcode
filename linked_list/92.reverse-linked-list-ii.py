@@ -23,7 +23,7 @@ class ListNode(object):
         self.next = None
 
 
-class Solution(object):
+class Solution_0(object):
     """ 思路
         1. 截取出需要翻转的部分
             1.1 记录下需要翻转的节点m，以及m的前一个节点
@@ -65,6 +65,77 @@ class Solution(object):
         node = self.reverse_helper(root.next, cur_count + 1, total)
         root.next.next = root
         root.next = None
+        return node
+
+
+class Solution(object):
+    """ 思路
+        1. 如果m==1，那么这个题目就是翻转一个链表的前n个节点
+        2. 如果m!=1, 假设原始链表的头结点是C，首先找到第m-1个节点（假设为A)保存下来，
+        然后翻转以第m个节点为链表头的链表（返回新的头节点，假设为B)
+        之后A.next = B就完成了，注意要返回原来的头结点
+    """
+    succesor = None
+
+    def reverseBetween(self, head, m, n):
+        if head is None:
+            return head
+        if m == 1:
+            new_root = self.reverse_top_n(head, n)
+            return new_root
+        else:
+            cur = head
+            i = 2
+            while i < m:
+                cur = cur.next
+                i += 1
+            tmp_root = self.reverse_top_n(cur.next, n - m + 1)
+            cur.next = tmp_root
+            return head
+
+    # 辅助函数，翻转一个链表的前n个节点
+    def reverse_top_n(self, head, num):
+        assert num >= 0, "Value error"
+        if num == 1:
+            self.succesor = head.next
+            return head
+
+        node = self.reverse_top_n(head.next, num - 1)
+        head.next.next = head
+        head.next = self.succesor
+        return node
+
+
+class Solution(object):
+    """ 思路
+        1. 如果m==1，那么这个题目就是翻转一个链表的前n个节点
+        2. 如果m!=1, 假设原始链表的头结点是C，首先找到第m-1个节点（假设为A)保存下来，
+        然后翻转以第m个节点为链表头的链表（返回新的头节点，假设为B)
+        之后A.next = B就完成了，注意要返回原来的头结点C
+    """
+    succesor = None
+
+    def reverseBetween(self, head, m, n):
+        if head is None:
+            return head
+        if m == 1:
+            new_root = self.reverse_top_n(head, n)
+            return new_root
+        else:
+            head.next = self.reverseBetween(head.next, m - 1, n - 1)
+            return head
+
+        # 辅助函数，翻转一个链表的前n个节点
+
+    def reverse_top_n(self, head, num):
+        assert num >= 0, "Value error"
+        if num == 1:
+            self.succesor = head.next
+            return head
+
+        node = self.reverse_top_n(head.next, num - 1)
+        head.next.next = head
+        head.next = self.succesor
         return node
 
 
