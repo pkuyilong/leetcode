@@ -19,6 +19,39 @@ k 是一个正整数，它的值小于或等于链表的长度。
 """
 
 
+class ListNode(object):
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+from collections import deque
+
+
 class Solution(object):
     def reverseKGroup(self, head, k):
-        pass
+        if head is None:
+            return head
+        dummy = ListNode(0)
+        dummy.next = head
+        end = dummy.next
+        start = dummy
+        cur = head
+        stack = deque()
+        i = 0
+        while cur is not None:
+            while cur is not None and i < k:
+                stack.append(cur)
+                cur = cur.next
+                i += 1
+
+            if len(stack) != k:
+                return dummy.next
+            end = cur
+            while len(stack) > 0:
+                node = stack.pop()
+                start.next = node
+                start = start.next
+            start.next = end
+            i = 0
+        return dummy.next

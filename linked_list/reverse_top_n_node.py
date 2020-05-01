@@ -1,4 +1,5 @@
 from linked_list.list_op import *
+from copy import deepcopy
 
 
 class Solution_0:
@@ -14,7 +15,7 @@ class Solution_0:
         return last
 
 
-class Solution:
+class Solution_00:
     def reverse_top_n(self, head, count):
         if head is None:
             return None
@@ -53,5 +54,5 @@ if __name__ == '__main__':
     head = create_list([1, 2, 3, 4, 5, 6])
     # print_list(head)
     sol = Solution()
-    head = sol.reverse_top_n(head, 7)
+    head = sol.reverse_top_n(head, 3)
     print_list(head)
