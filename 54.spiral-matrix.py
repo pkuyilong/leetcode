@@ -1,9 +1,10 @@
 import numpy as np
 from pprint import pprint
 
+
 #
 
-class Solution(object):
+class Solution_2(object):
     res = list()
 
     def spiralOrder(self, matrix):
@@ -70,6 +71,45 @@ class Solution_1(object):
         return ans
 
 
+
+class Solution:
+    def spiralOrder(self, matrix):
+        if matrix is None or len(matrix) == 0 or len(matrix[0]) == 0:
+            return
+        dy = [0, 1, 0, -1]
+        dx = [1, 0, -1, 0]
+        idx = 0
+        row = len(matrix)
+        col = len(matrix[0])
+        total = row * col
+        visited_set = set()
+        result = []
+        r, c = 0, 0
+        i = 0
+        while i < total:
+            if 0 <= r < row and 0 <= c < col:
+                if (r, c) not in visited_set:
+                    visited_set.add((r, c))
+                    result.append(matrix[r][c])
+                    print(matrix[r][c])
+                    i += 1
+                    r += dy[idx]
+                    c += dx[idx]
+                else:
+                    r -= dy[idx]
+                    c -= dx[idx]
+                    idx = (idx + 1) % 4
+                    r += dy[idx]
+                    c += dx[idx]
+            else:
+                r -= dy[idx]
+                c -= dx[idx]
+                idx = (idx + 1) % 4
+                r += dy[idx]
+                c += dx[idx]
+        return result
+
+
 if __name__ == '__main__':
     arr = [[1, 2, 3, 4],
            [5, 6, 7, 8],
@@ -79,14 +119,7 @@ if __name__ == '__main__':
             [9, 10, 11]]
     arr3 = [[1, 11], [2, 12], [3, 13], [4, 14], [5, 15], [6, 16], [7, 17], [8, 18], [9, 19], [10, 20]]
 
-
-    new = [list(reversed(i)) for i in arr3[1:]]
-    pprint(new)
-    l = [list(i) for i in zip(*new)]
-    print(l)
-
-
-    # sol = Solution_1()
-    # res = sol.spiralOrder(arr3)
-    # print(res)
-    # # print(Solution.res)
+    sol = Solution()
+    res = sol.spiralOrder(arr2)
+    print(res)
+    # print(Solution.res)

@@ -71,6 +71,6 @@ if __name__ == '__main__':
     nums = [1, 2, 3, 4, 5]
     head = create_list(nums)
     print_list(head)
-    sol = Solution_1()
+    sol = Solution()
     new_head = sol.reverseList(head)
     print_list(new_head)
