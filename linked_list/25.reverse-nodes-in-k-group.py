@@ -35,11 +35,13 @@ class Solution(object):
         dummy = ListNode(0)
         dummy.next = head
         end = dummy.next
+        # 需要一个节点用来连接倒排之后的前k个节点
         start = dummy
         cur = head
         stack = deque()
         i = 0
         while cur is not None:
+            # 现将前k个节点暂存到双向队列中
             while cur is not None and i < k:
                 stack.append(cur)
                 cur = cur.next
@@ -47,7 +49,11 @@ class Solution(object):
 
             if len(stack) != k:
                 return dummy.next
+
+            # 保存好第k个节点的下一个节点，不然无法连接成链表
             end = cur
+
+            # 一次pop出来重新构建前k个节点
             while len(stack) > 0:
                 node = stack.pop()
                 start.next = node
