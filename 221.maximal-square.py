@@ -18,7 +18,6 @@
 
 class Solution(object):
     def maximalSquare(self, matrix):
-
         if matrix is None or len(matrix) == 0 or len(matrix[0]) == 0:
             return 0
         max_res = 0
@@ -29,6 +28,7 @@ class Solution(object):
                     if i == 0 or j == 0:
                         matrix[i][j] = 1
                     else:
+                        # 主要考虑他的左上角/左边/右边，一开始没想到
                         matrix[i][j] = min(matrix[i - 1][j - 1],
                                            matrix[i - 1][j],
                                            matrix[i][j - 1]) + 1
