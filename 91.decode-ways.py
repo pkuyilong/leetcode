@@ -1,56 +1,42 @@
 # 91. 解码方法
 # https://leetcode-cn.com/problems/decode-ways/
 
+""" 思路
+    这是个升级版本的爬楼梯，我一时间竟然没有反应过来，
+    不过我想到了肯定是dp[i] 与 dp[i-1]、dp[i-2]有关系，
+    然而并没有把其中的关系理清楚
+
+"""
+
 
 class Solution:
-    """ Time excess limit
-    这里进行了不断的递归，分解子问题
+    def numDecodings(self, s: str) -> int:
+        # 如果第一个字符就是'0'，那么肯定无法解析
+        if not s or s[0] == '0':
+            return 0
 
-    """
-    def __init__(self):
-        self.count = 0
-        self.s = set()
-        self.d = dict()
+        # 从这里就不用考虑开头是'0'的情况了，可以将dp[1]置为1
+        dp = [0 for i in range(len(s) + 1)]
+        dp[0] = 1
+        dp[1] = 1
+        for i in range(1, len(s)):
+            # 首先处理字符为'0'的情况
+            if s[i] == '0':
+                if s[i - 1] == '1' or s[i - 1] == '2':
+                    dp[i + 1] = dp[i - 1]
+                else:
+                    return 0
 
-    def numDecodings(self, s):
-        self.helper(s)
-        return self.count
-
-    def helper(self, s):
-        if s in self.d.keys():
-            return self.d[s]
-
-        if s == "":
-            self.count += 1
-            return
-
-        if len(s) == 1:
-            if self.is_valid(s):
-                self.count += 1
-                return
-        else:
-            for i in range(1, 3):
-                cur = s[:i]
-                if self.is_valid(cur):
-                    self.helper(s[i:])
-
-
-    def is_valid(self, s):
-        if s is None or s == "":
-            return False
-        if s.startswith('0'):
-            return False
-        if int(s) > 26:
-            return False
-        return True
+            else:
+                if s[i - 1] == '1' or s[i - 1] == '2' and '0' < s[i] < '7':
+                    dp[i + 1] = dp[i] + dp[i - 1]
+                else:
+                    dp[i + 1] = dp[i]
+        # print(dp)
+        return dp[len(s)]
 
 
 if __name__ == '__main__':
-    import time
-
-    s = "123678999999"*4
-    sol = Solution()
-    start = time.time()
-    count = sol.numDecodings(s)
-    print(time.time() - start)
-    print("res is :", count)
+    s = "10"
+    res = Solution().numDecodings(s)
+    print(res)

@@ -1,139 +1,114 @@
 # 322. 零钱兑换
 # https://leetcode-cn.com/problems/coin-change/
 
+"""
+给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+
+示例 1:
+
+输入: coins = [1, 2, 5], amount = 11
+输出: 3
+解释: 11 = 5 + 5 + 1
+示例 2:
+
+输入: coins = [2], amount = 3
+输出: -1
+
+说明:
+你可以认为每种硬币的数量是无限的。
+"""
+
+""" 思路
+    coins = [1, 2, 5] amount = 10
+    dp[i]代表凑成价值i源所需要的最小的硬币个数
+    
+    dp 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    
+    dp[0] = 0
+    dp[1] = 1
+    dp[2] = 1
+    dp[3] = min(dp[3-1]， dp[3-2]) + 1 = min(1, 1) + 1 = 2
+    dp[4] = min(dp[4-1], dp[4-2]) + 1 = min(2, 1) + 1 = 2
+    dp[5] = 1
+    dp[6] = min(dp[6-1], dp[6-2], dp[6-5]) = min(1, 2, 1) + 1 = 2
+    以6为例，当我们想凑齐6元所需要的最小硬币数的时候，我们可以依赖之前计算过的数值，
+    因为之前的d[0] ~ d[5]都是最优解了，所以我们可以在之前的最优解上进一步的扩充
+    
+    要想求得一个大问题的最优解，那么要保证其中的子问题一定也是最优解
+    
+"""
 
 import sys
-import time
 
-
-class Solution_0:
-    def coinChange(self, coins, amount):
-        """
-        依次计算从1到amount的值, 因为后面取的值会依赖前面的值
-        """
-        if amount == 0:
-            return 0
-
-        # 初始化dp
-        dp = [0 for i in range(amount + 1)]
-
-        for i in range(1, amount + 1):
-            # 初始tmp非常重要，因为要求最小值，所以设置tmp为python能表示的最大值
-            tmp = sys.maxsize
-
-            for j in range(len(coins)):
-                # 如果当前值恰好是备选硬币的值，在该位置设置为1
-                if i == coins[j]:
-                    dp[i] = 1
-                    break
-                # 当前要求的值肯定是之前的某个数值加上现在的coins中某个硬币的值得到的，
-                # 所以依次测试coin的值，查找使用哪个硬币会得到更小的值
-                elif i >= coins[j]:
-                    if dp[i - coins[j]] != 0:
-                        tmp = min(tmp, dp[i - coins[j]] + 1)
-                        dp[i] = tmp
-        return dp[amount] if dp[amount] != 0 else -1
-
-
-class Solution_1:
-    def coinChange(self, coins, amount):
-        dp = [sys.maxsize for _ in range(amount + 1)]
-        dp[0] = 0
-        # 以下代码有风险， coins的值可能直接大约amount的值， 例如coins=【2】， amount = 1
-        # for coin in coins:
-        #     dp[coin] = 1
-
-        for i in range(1, amount + 1):
-            for coin in coins:
-                dp[i] = min(dp[i], self.get_dp(dp, i-coin) + 1)
-        return dp[amount] if dp[amount] != sys.maxsize else -1
-
-
-    def get_dp(self, dp, i):
-        if i >= 0:
-            return dp[i]
-        else:
-            return sys.maxsize
-
-
-class Solution_2:
-    def coinChange(self, coins, amount):
-        memo = [sys.maxsize for _ in range(amount + 1)]
-        memo[0] = 0
-        self.coinChangeHelper(memo, coins, amount)
-        return memo[amount] if memo[amount] != sys.maxsize else -1
-
-    def coinChangeHelper(self, memo, coins, amount):
-        if amount < 0:
-            return sys.maxsize
-
-        if memo[amount] != sys.maxsize:
-            return memo[amount]
-
-        for coin in coins:
-            memo[amount] = min(memo[amount],
-                               self.coinChangeHelper(memo, coins, amount - coin) + 1)
-        return memo[amount] if memo[amount] != sys.maxsize else sys.maxsize
-
-
-class Solution_3():
-    def coinChange(self, coins, amount):
-        """
-        BFS
-        """
-        self.ans = sys.maxsize
-        self.coinChangeHelper(coins, amount, 0, self.ans)
-        return self.ans if self.ans != sys.maxsize else -1
-
-    def coinChangeHelper(self, coins, amount, depth, ans):
-        if amount < 0:
-            return
-        if amount == 0:
-            self.ans = min(self.ans, depth)
-            print(self.ans)
-            return
-        for coin in coins:
-            self.coinChangeHelper(coins,
-                                  amount - coin,
-                                  depth + 1,
-                                  self.ans)
-
-
-from queue import Queue
-
+# Accepted
 class Solution():
     def coinChange(self, coins, amount):
+        dp = [0 for _ in range(amount + 1)]
+        for i in range(1, amount + 1):
+            cost = sys.maxsize
+            for c in coins:
+                if i - c >= 0:
+                    # 犯了一个严重的错误，逻辑上应该找到dp[i-coin] + 1 的最小值
+                    # 所以应该和 dp[i-c] + 1 作比较，不然如果cost一直比较小，
+                    # 那么cost相当于在比较完成之后作了自加一操作  cnst = cost + 1
+                    cost = min(cost, dp[i - c] + 1)
+            dp[i] = cost
+
+        if dp[amount] == sys.maxsize:
+            return -1
+        else:
+            return dp[amount]
+
+
+# DFS timeout
+class Solution_DFS():
+    def coinChange(self, coins, amount):
         coins.sort(reverse=True)
-        min_level = sys.maxsize
-        q = Queue()
-        q.put(amount)
-        level = 0
-        visited = set()
+        res = []
+        memo = []
+        self.change_helper(coins, amount, 0, [], res)
+        if len(res) == 0:
+            return -1
+        return len(res[0])
 
-        while not q.empty():
-            # 直接对队列中的元素进行处理
-            for _ in range(q.qsize()):
-                node = q.get()
-                if node == 0:
-                    min_level = min(min_level, level)
-                    return min_level
+    def change_helper(self, coins, amount, count, tmp, res):
+        if amount < 0:
+            return
+        if amount == 0:
+            res.append(tmp[:])
+            return
 
-                for coin in coins:
-                    if node - coin in visited:
-                        continue
-                    if node - coin >= 0:
-                        q.put(node - coin)
-                        # 此算法的精髓，对节点进行剪枝
-                        visited.add(node - coin)
-            level = level + 1
-        return min_level if min_level != sys.maxsize else -1
+        for coin in coins:
+            tmp.append(coin)
+            self.change_helper(coins, amount - coin, count + 1, tmp, res)
+            tmp.pop()
+
+
+from collections import deque
+
+
+class Solution_9():
+    def coinChange(self, coins, amount):
+        coins.sort(reverse=True)
+        q = deque()
+        q.append((amount, 0))
+        ans = -1
+        while len(q) != 0:
+            cur_amount, cur_level = q.popleft()
+            print(cur_amount, cur_level)
+            if cur_amount == 0:
+                ans = cur_level
+                break
+
+            for coin in coins:
+                # 必须确保要求解的数值要大于备选硬币的值
+                if cur_amount >= coin:
+                    q.append((cur_amount - coin, cur_level + 1))
+        return ans
 
 
 if __name__ == '__main__':
-    start = time.time()
-    coins = [1, 2, 5]
-    amount = 63
-    sol = Solution()
-    res = sol.coinChange(coins, amount)
+    coins = [2, 4]
+    amount = 7
+    res = Solution().coinChange(coins, amount)
     print(res)
-    print(time.time() - start)

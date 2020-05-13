@@ -1,79 +1,92 @@
 # 279. 完全平方数
 # https://leetcode-cn.com/problems/perfect-squares/
 
-import math
-import sys
 
+""" 思路
+    典型的动态规划问题, 由下到上的计算思路
+
+
+    dp[0] = 0  无效
+    dp[1] = 1
+    dp[2] = min(sys.maxsize, dp[2 - 1 * 1] + 1) = 1
+    dp[3] = min(sys.maxsize, dp[3 - 1 * 1] + 1) = 1
+    dp[4] = min(sys.maxsize, dp[4 - 1 * 1] + 1), dp[4 - 2 * 2] + 1) = 1
+    dp[5] = min(sys.maxsize, dp[5 - 1 * 1] + 1), dp[5 - 2 * 2] + 1) = 2
+    dp[6] = ....
+
+    还是那句话，当前问题要依赖于之前的子问题
 """
-   ___ ___   __| (_)_ __   __ _ 
-  / __/ _ \ / _` | | '_ \ / _` |
- | (_| (_) | (_| | | | | | (_| |
-  \___\___/ \__,_|_|_| |_|\__, |
-                          |___/ 
-"""
+
+
 class Solution:
-    """
-    这道题目跟最长递增子序列很相似，都是从当前位置查找之前的位置。
-
-    动态规划： i为当前元素，然后考虑小于当前元素的若干个数字的平方
-    dp[i] 表示数字i使用的最小平方数
-    dp[i] = min(   dp[i - j*j] + 1,      dp[i]   )
-            当前位置之前的元素，找个最小的   当前元素，由于是一个遍历，该值一直是记录之前最小的
-
-     仔细考虑一下，dp的公式类似于一个循环中查找最小值的逻辑
-    min_val = min(min_val, cur_val)
-    """
-
-    def numSquares(self, n: int) -> int:
-        dp = [0 for i in range(n + 1)]
-
+    import sys
+    def numSquares(self, n):
+        if n < 0:
+            return -1
+        dp = [sys.maxsize for i in range(n + 1)]
+        dp[0] = 0
         for i in range(1, n + 1):
-            # 每次最坏的结果就是i，就是每个数字由i个1组成
-            # 这样就避免了使用最大值填充dp数组了
-            dp[i] = i
+            j = 1
+            while j * j <= i:
+                dp[i] = min(dp[i - j * j] + 1, dp[i])
+                j += 1
+        return dp[n]
 
-            for j in range(1, int(math.sqrt(i)) + 1):
+
+# # 这个版本有bug， 不过还是能通过leetcode
+# class Solution:
+#     def numSquares(self, n):
+#         if n < 0:
+#             return -1
+#         dp = [sys.maxsize for i in range(n + 1)]
+#         dp[0] = 0
+#         # 因为这里没有判断n是不是大于1, 所以直接对dp[1]进行赋值会导致下表越界
+#         dp[1] = 1
+#         for i in range(1, n + 1):
+#             j = 1
+#             while j * j <= i:
+#                 dp[i] = min(dp[i - j * j] + 1, dp[i])
+#                 j += 1
+#         return dp[n]
+
+
+class Solution:
+    def numSquares(self, n):
+        import math
+        import sys
+        if n < 0:
+            return -1
+        dp = [sys.maxsize for i in range(n + 1)]
+        dp[0] = 0
+        for i in range(1, n + 1):
+            # 这种写法不需要一次一次的计算平方值
+            for j in range(1, int(math.sqrt(i))+ 1):
                 dp[i] = min(dp[i - j * j] + 1, dp[i])
         return dp[n]
 
 
-from queue import Queue
+
+""" 思路
+    这种是使用队列模拟BFS搜索的过程
+                 12 
+        3        8      11 
+    1    2
+0      
+"""
+from collections import deque
 import math
-
-class Solution_1:
+class Solution:
     def numSquares(self, n):
-        """
-        BFS 需要进行剪枝，备忘录法，如果已经计算过了，就不要再计算了
-        :param n:
-        :return:
-        """
-        q = Queue()
-        q.put(n)
-        visited = set()
-        visited.add(n)
-        level = 1
+        if n <= 0:
+            return -1
+        q = deque()
+        q.append((n, 0))
+        while len(q):
+            tmp_node = q.popleft()
+            value, level = tmp_node
+            for j in range(int(math.sqrt(value)), -1, -1):
+                if value - j * j > 0:
+                    q.append((value - j * j, level + 1))
+                if value - j * j == 0:
+                    return level + 1
 
-        while not q.empty():
-            # 遍历每一层
-            for _ in range(q.qsize()):
-                node = q.get()
-                # 依次减去小于node的平方和，构造出下一层的值
-                for i in range(1, int(math.sqrt(node)) + 1):
-                    tmp = node - i * i
-                    # 如果已经计算过了， 就跳过
-                    if tmp in visited:
-                        continue
-                    if tmp == 0:
-                        return level
-
-                    if tmp > 0:
-                        q.put(tmp)
-                        visited.add(tmp)
-            level = level + 1
-        return -1
-
-
-if __name__ == '__main__':
-    sol = Solution()
-    res = sol.numSquares(12)
-    print(res)
