@@ -11,7 +11,7 @@ class TreeNode:
 
 class Solution1:
     def __init__(self):
-        self.ans = '~'
+        self.ans = "~"
 
     def smallestFromLeaf(self, root: TreeNode) -> str:
         self.dfs(root, [])
@@ -27,18 +27,6 @@ class Solution1:
             self.dfs(root.right, A)
             A.pop()
 
-
-
-
-
-def list_in_func(A):
-    print("......")
-    print(id(A))
-    A.append("hello")
-    A.append("1")
-    A.append(2)
-    print(id(A))
-    print("......")
 
 
 if __name__ == '__main__':
