@@ -10,10 +10,11 @@
 #         self.right = None
 
 
-
 """
     中序遍历是左子树 根节点 右子树
 """
+
+
 class Solution:
     prev = None
 
@@ -26,3 +27,24 @@ class Solution:
         self.prev = root
         right = self.isValidBST(root.right)
         return left and right
+
+
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        nums = list()
+        self.helper(root, nums)
+        for i in range(1, len(nums)):
+            if nums[i - 1] >= nums[i]:
+                return False
+        return True
+
+    def helper(self, root, nums):
+        if root is None:
+            return
+        self.helper(root.left, nums)
+        nums.append(root.val)
+        self.helper(root.right, nums)

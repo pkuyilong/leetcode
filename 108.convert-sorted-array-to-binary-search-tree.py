@@ -43,7 +43,7 @@ class Solution(object):
 
     def helper(self, nums, left, right):
         if left > right:
-            return
+            return None
         # 选取中间节点作为根结点，那么他的左子树节点可以递归的调用左边的数字，右边同理
         mid = left + (right - left) // 2
         root = TreeNode(nums[mid])
