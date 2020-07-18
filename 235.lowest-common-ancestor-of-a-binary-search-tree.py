@@ -18,6 +18,7 @@ class TreeNode(object):
 
 class Solution(object):
     """
+    省略了很多临界条件
     两个节点p q的公共祖先N, 有两种情况
         1. p在公共祖先N的左子树中 and q在公共祖先N右子树中
         2.q在公共祖先N的左子树中 and p在公共祖先N右子树中

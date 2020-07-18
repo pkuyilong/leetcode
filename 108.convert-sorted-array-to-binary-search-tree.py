@@ -47,6 +47,7 @@ class Solution(object):
         # 选取中间节点作为根结点，那么他的左子树节点可以递归的调用左边的数字，右边同理
         mid = left + (right - left) // 2
         root = TreeNode(nums[mid])
+        # 进入递归的时候参数一定要小心， 很可能把left就习惯性的写成0了g
         root.left = self.helper(nums, left, mid - 1)
         root.right = self.helper(nums, mid + 1, right)
         return root
