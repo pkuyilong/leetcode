@@ -11,7 +11,7 @@ class TreeNode:
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         # 终止条件 如果当前节点是None 或者等于p 或者q，那么返回
-        if root is None or p == root or q == root:
+        if root is None or p == root.val or q == root.val:
             return root
 
         # 先在某一个分支上找到其中的一个节点
@@ -47,7 +47,12 @@ class BST:
 
 
 if __name__ == '__main__':
-    nums = [1, 2, 3, 4, 5, 7, 9, 11]
+    nums = [3, 9, 10, 2, 5, 4, 8]
     bst = BST(nums)
-    print("####" * 20)
-    bst.inOrder(bst.root)
+    # print("####" * 20)
+    # bst.inOrder(bst.root)
+
+    sol = Solution()
+    node = sol.lowestCommonAncestor(bst.root, 8, 4)
+    print(node.val)
+
