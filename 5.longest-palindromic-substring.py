@@ -1,5 +1,19 @@
+# https://leetcode-cn.com/problems/longest-palindromic-substring/
 
+"""
+给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
 
+示例 1：
+
+输入: "babad"
+输出: "bab"
+注意: "aba" 也是一个有效答案。
+示例 2：
+
+输入: "cbbd"
+输出: "bb"
+"""
+""" 方法1
 class Solution(object):
     def longestPalindrome(self, s):
         if s is None or len(s) == 0:
@@ -23,6 +37,19 @@ class Solution(object):
             start += 1
             end -= 1
         return True
+ """
+
+""" 方法2 """
+
+
+class Solution(object):
+    def longestPalindrome(self, s):
+        rev = s[::-1]
+        res = self.longestPalindrome(s, rev)
+        return res
+
+    def longCommonSubstring(self, s, t):
+        pass
 
 
 if __name__ == '__main__':
