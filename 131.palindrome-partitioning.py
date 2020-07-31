@@ -2,7 +2,7 @@
 
 """与93题 恢复ip地址思路一致"""
 
-
+"""
 class Solution(object):
     def partition(self, s):
         """
@@ -40,3 +40,35 @@ class Solution(object):
             left += 1
             right -= 1
         return True
+"""
+
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        tmp = list()
+        ans = list()
+        if s is None or len(s) == 0:
+            return []
+        if len(s) == 1:
+            return [[s]]
+        self.helper(s, tmp, ans)
+        return ans
+
+    def helper(self, s, tmp, ans):
+        if len(s) == 0:
+            ans.append(tmp[:])
+            return
+
+        for i in range(len(s)):
+            front = s[:i + 1]
+            end = s[i + 1:]
+            if self.is_valid(front):
+                tmp.append(front)
+                self.helper(end, tmp, ans)
+                tmp.pop()
+
+    def is_valid(self, s):
+        return s == s[::-1]

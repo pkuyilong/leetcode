@@ -29,6 +29,6 @@ class Solution:
 
 if __name__ == '__main__':
     sol = Solution()
-    nums = [1, 3, 5, 6]
-    res = sol.searchInsert(nums, 7)
+    nums = [5, 7, 7, 8, 8, 10]
+    res = sol.searchInsert(nums, 8)
     print(res)
