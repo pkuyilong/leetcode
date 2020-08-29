@@ -42,18 +42,72 @@ class Solution(object):
 """ 方法2 """
 
 
+# class Solution(object):
+#     def longestPalindrome(self, s):
+#         rev = s[::-1]
+#         res = self.longestPalindrome(s, rev)
+#         return res
+#
+#     def longCommonSubstring(self, s, t):
+#         pass
+
 class Solution(object):
     def longestPalindrome(self, s):
-        rev = s[::-1]
-        res = self.longestPalindrome(s, rev)
-        return res
+        if len(s) < 2:
+            return s
 
-    def longCommonSubstring(self, s, t):
-        pass
+        dp = [[False for i in range(len(s))] for j in range(len(s))]
+        max_len = 1
+        start = end = 0
+        for i in range(len(s)):
+            dp[i][i] = True
+
+        for j in range(1, len(s)):
+            for i in range(0, j+1):
+        # for i in range(len(s)):
+        #     for j in range(i, len(s)):
+                if s[i] == s[j]:
+                    if j - i < 3:
+                        dp[i][j] = True
+                    else:
+                        dp[i][j] = dp[i+1][j-1]
+                else:
+                    dp[i][j] = False
+
+                if dp[i][j]:
+                    if j - i + 1 > max_len:
+                        max_len = j - i + 1
+                        start = i
+                        end = j
+
+        return s[start: end+1]
 
 
 if __name__ == '__main__':
-    s = "cbbd"
+    s = "aaaa"
     sol = Solution()
     res = sol.longestPalindrome(s)
     print(res)
+    # for j in range(1, len(s)):
+    #     for i in range(0, j):
+    #         print(i, j)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
