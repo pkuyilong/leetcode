@@ -62,10 +62,12 @@ class Solution(object):
         for i in range(len(s)):
             dp[i][i] = True
 
-        for j in range(1, len(s)):
-            for i in range(0, j+1):
-        # for i in range(len(s)):
-        #     for j in range(i, len(s)):
+        # 这里的遍历不能随便写, 因为当前值要考虑[i+1][j-1]位置的元素,也就是左下角的元素, 因此
+        # 在计算当前值的时候,一定要注意其左下角的已经计算过了, 不然就无法使用动态规划, 会得出错误的结果
+        for i in range(len(s) - 1, -1, -1):
+            for j in range(i + 1, len(s)):
+        # for j in range(len(s)):
+        #     for i in range(0, j):
                 if s[i] == s[j]:
                     if j - i < 3:
                         dp[i][j] = True
@@ -79,7 +81,7 @@ class Solution(object):
                         max_len = j - i + 1
                         start = i
                         end = j
-
+        print(start, end)
         return s[start: end+1]
 
 
@@ -88,8 +90,9 @@ if __name__ == '__main__':
     sol = Solution()
     res = sol.longestPalindrome(s)
     print(res)
-    # for j in range(1, len(s)):
-    #     for i in range(0, j):
+
+    # for i in range(len(s)-1, -1, -1):
+    #     for j in range(i+1, len(s)):
     #         print(i, j)
 
 
