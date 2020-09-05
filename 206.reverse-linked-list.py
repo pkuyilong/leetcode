@@ -9,7 +9,7 @@
 输入: 1->2->3->4->5->NULL
 输出: 5->4->3->2->1->NULL
 """
-from linked_list.list_op import *
+from list_op import *
 
 
 class Solution_1:
@@ -39,6 +39,9 @@ class Solution_1:
         return head
 
 
+"""
+总体思路就是
+"""
 class Solution:
     def reverseList(self, head):
         if head is None:
@@ -57,6 +60,7 @@ class Solution:
         # 使其下一个节点的next节点指向自己
         head.next.next = head
         head.next = None
+
         return node
 
     # test
