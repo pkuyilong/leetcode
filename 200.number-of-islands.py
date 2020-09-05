@@ -44,7 +44,6 @@ class Solution(object):
             return False
         return True
 
-
 if __name__ == '__main__':
     grids = [["1", "1", "0", "0", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "1", "0", "0"], ["0", "0", "0", "1", "1"]]
     sol = Solution()
