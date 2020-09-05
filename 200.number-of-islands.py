@@ -44,8 +44,43 @@ class Solution(object):
             return False
         return True
 
+
+class Solution2(object):
+    def numIslands(self, grid):
+        if grid is None or len(grid) == 0 or len(grid[0]) == 0:
+            return 0
+
+        count = 0
+        row = len(grid)
+        col = len(grid[0])
+        visited = [[False for j in range(col)] for i in range(row)]
+
+        for i in range(row):
+            for j in range(col):
+                if grid[i][j] == '1' and not visited[i][j]:
+                    count += 1
+                    self.dfs(grid, i, j, visited)
+        return count
+
+    def dfs(self, grid, i, j, visited):
+        # 判断边界
+        if not self.valid(grid, i, j) or visited[i][j] or grid[i][j] == "0":
+            return
+        visited[i][j] = True
+        self.dfs(grid, i, j + 1, visited)
+        self.dfs(grid, i + 1, j, visited)
+        self.dfs(grid, i, j - 1, visited)
+        self.dfs(grid, i - 1, j, visited)
+        return
+
+    def valid(self, grid, i, j):
+        if i < 0 or j < 0 or i > len(grid) - 1 or j > len(grid[0]) - 1:
+            return False
+        return True
+
+
 if __name__ == '__main__':
     grids = [["1", "1", "0", "0", "0"], ["1", "1", "0", "0", "0"], ["0", "0", "1", "0", "0"], ["0", "0", "0", "1", "1"]]
-    sol = Solution()
+    sol = Solution2()
     ans = sol.numIslands(grids)
     print(ans)
