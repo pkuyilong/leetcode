@@ -1,4 +1,6 @@
 import sys
+
+
 class Solution:
     def jump(self, nums):
         if not nums or len(nums) == 1:

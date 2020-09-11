@@ -42,6 +42,8 @@ class Solution_1:
 """
 总体思路就是
 """
+
+
 class Solution:
     def reverseList(self, head):
         if head is None:
@@ -61,13 +63,6 @@ class Solution:
         head.next.next = head
         head.next = None
 
-        return node
-
-    # test
-    def last_node(self, head):
-        if head.next is None:
-            return head
-        node = self.last_node(head.next)
         return node
 
 
